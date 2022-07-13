@@ -28,7 +28,7 @@ void GraphicSort::Run() {
                 RenderElements();
             }
             else if (event.type == sf::Event::MouseButtonPressed && event.key.code == sf::Mouse::Right) {
-                sorting_algs[0](shared_from_this(), sorting_elements);
+                sorting_algs[2](shared_from_this(), sorting_elements);
             }
         }
         std::this_thread::sleep_for(std::chrono::milliseconds(32));

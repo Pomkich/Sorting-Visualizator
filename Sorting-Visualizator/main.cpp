@@ -9,7 +9,10 @@ int main()
 {
     std::shared_ptr<GraphicSort> win = make_shared<GraphicSort>();
     win->AddAlgorithm(BubbleSort);
+    win->AddAlgorithm(ShakerSort);
+    win->AddAlgorithm(CombSort);
     win->Run();
+
 
     return 0;
 }
