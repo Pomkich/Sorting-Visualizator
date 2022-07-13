@@ -2,7 +2,7 @@
 #include "Constants.h"
 #include <iostream>
 #include <vector>
-
+#include <set>
 
 using namespace std;
 
@@ -38,7 +38,8 @@ public:
                 if (event.type == sf::Event::Closed)
                     window.close();
                 else if (event.type == sf::Event::MouseButtonPressed && event.key.code == sf::Mouse::Left) {
-
+                    ShuffleElements();
+                    RenderElements();
                 }
             }
         }
@@ -53,7 +54,14 @@ public:
     }
 
     void ShuffleElements() {
-
+        srand(time(NULL));
+        for (int i = 0; i < sorting_elements.size(); i++) {
+            int switch_num = rand() % sorting_elements.size();
+            swap(sorting_elements[i], sorting_elements[switch_num]);
+        }
+        for (int i = 0; i < graphic_elements.size(); i++) {
+            graphic_elements[i].setSize(sf::Vector2f(rect_width, rect_height_scale * (sorting_elements[i] + 1)));
+        }
     }
 };
 
