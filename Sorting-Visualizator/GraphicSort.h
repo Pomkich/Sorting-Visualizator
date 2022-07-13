@@ -2,6 +2,7 @@
 #include <vector>
 #include "Constants.h"
 #include <SFML/Graphics.hpp>
+#include <thread>
 
 class GraphicSort {
 private:
