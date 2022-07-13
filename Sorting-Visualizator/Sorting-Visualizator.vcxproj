@@ -138,6 +138,7 @@
     <ClInclude Include="AlgorithmObs.h" />
     <ClInclude Include="Constants.h" />
     <ClInclude Include="GraphicSort.h" />
+    <ClInclude Include="SortAlgoritms.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

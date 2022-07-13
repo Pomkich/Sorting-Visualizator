@@ -4,7 +4,7 @@ GraphicSort::GraphicSort() {
     sorting_elements.resize(elem_size);
     graphic_elements.resize(elem_size);
     for (int i = 0; i < sorting_elements.size(); i++) {
-        sorting_elements[i] = i;
+        sorting_elements[i] = i + 1;
         graphic_elements[i].setSize(sf::Vector2f(rect_width, rect_height_scale * (i + 1)));
         graphic_elements[i].rotate(180);
         graphic_elements[i].setPosition((i + 1) * rect_width, window_height);
@@ -27,6 +27,9 @@ void GraphicSort::Run() {
                 ShuffleElements();
                 RenderElements();
             }
+            else if (event.type == sf::Event::MouseButtonPressed && event.key.code == sf::Mouse::Right) {
+                sorting_algs[0](shared_from_this(), sorting_elements);
+            }
         }
         std::this_thread::sleep_for(std::chrono::milliseconds(32));
     }
@@ -47,10 +50,21 @@ void GraphicSort::ShuffleElements() {
         std::swap(sorting_elements[i], sorting_elements[switch_num]);
     }
     for (int i = 0; i < graphic_elements.size(); i++) {
-        graphic_elements[i].setSize(sf::Vector2f(rect_width, rect_height_scale * (sorting_elements[i] + 1)));
+        graphic_elements[i].setSize(sf::Vector2f(rect_width, rect_height_scale * sorting_elements[i]));
     }
 }
 
+void GraphicSort::AddAlgorithm(void (*algh_ptr)(std::shared_ptr<AlgorithmObs>, std::vector<int>&)) {
+    sorting_algs.push_back(algh_ptr);
+}
+
 void GraphicSort::StepDone(int first, int second) {
-    std::cout << "obs check" << std::endl;
+    graphic_elements[first].setSize(sf::Vector2f(rect_width, rect_height_scale * sorting_elements[first]));
+    graphic_elements[second].setSize(sf::Vector2f(rect_width, rect_height_scale * sorting_elements[second]));
+    graphic_elements[first].setFillColor(sf::Color::Red);
+    graphic_elements[second].setFillColor(sf::Color::Red);
+    RenderElements();
+    graphic_elements[first].setFillColor(sf::Color::White);
+    graphic_elements[second].setFillColor(sf::Color::White);
+    //std::this_thread::sleep_for(std::chrono::milliseconds(1024));
 }
