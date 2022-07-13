@@ -50,3 +50,7 @@ void GraphicSort::ShuffleElements() {
         graphic_elements[i].setSize(sf::Vector2f(rect_width, rect_height_scale * (sorting_elements[i] + 1)));
     }
 }
+
+void GraphicSort::StepDone(int first, int second) {
+    std::cout << "obs check" << std::endl;
+}

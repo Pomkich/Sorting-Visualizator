@@ -135,6 +135,7 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AlgorithmObs.h" />
     <ClInclude Include="Constants.h" />
     <ClInclude Include="GraphicSort.h" />
   </ItemGroup>
