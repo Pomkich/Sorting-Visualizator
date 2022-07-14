@@ -8,11 +8,11 @@ using namespace std;
 int main()
 {
     std::shared_ptr<GraphicSort> win = make_shared<GraphicSort>();
-    win->AddAlgorithm(BubbleSort, "bubble sort");
-    win->AddAlgorithm(ShakerSort, "shaker sort");
-    win->AddAlgorithm(CombSort, "comb sort");
-    win->AddAlgorithm(InsertionSort, "insertion sort");
-    win->AddAlgorithm(QuickSort, "quick sort");
+    win->AddAlgorithm(BubbleSort, "bubble sort", true);
+    win->AddAlgorithm(ShakerSort, "shaker sort", true);
+    win->AddAlgorithm(CombSort, "comb sort", false);
+    win->AddAlgorithm(InsertionSort, "insertion sort", true);
+    win->AddAlgorithm(QuickSort, "quick sort", false);
     win->Run();
 
 

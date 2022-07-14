@@ -7,6 +7,7 @@
 #include <memory>
 #include "AlgorithmObs.h"
 #include <iostream>
+#include <set>
 
 class GraphicSort : public AlgorithmObs, public std::enable_shared_from_this<GraphicSort> {
 private:
@@ -21,6 +22,7 @@ private:
     // and reference to elements
     std::vector<std::function<void(std::shared_ptr<AlgorithmObs>, std::vector<int>&)>> sorting_algs;
     std::vector<std::string> alg_names;
+    std::set<std::string> slow_alghs;
     int alg_id; // current algorithm
 
 public:
@@ -30,8 +32,9 @@ public:
     void RenderElements();
 
     void ResizeElements(int elem_sz);
+    bool IsSlowAlgSelected();
     void ShuffleElements();
-    void AddAlgorithm(void (*)(std::shared_ptr<AlgorithmObs>, std::vector<int>&), std::string alg_name);
+    void AddAlgorithm(void (*)(std::shared_ptr<AlgorithmObs>, std::vector<int>&), std::string alg_name, bool slow);
 
     virtual void StepDone(int first, int second) override;
 };

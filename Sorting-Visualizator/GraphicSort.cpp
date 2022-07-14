@@ -2,7 +2,7 @@
 
 GraphicSort::GraphicSort() {
     alg_id = 0;
-    ResizeElements(elem_size);
+    ResizeElements(slow_elem_size);
 
     // setting text labels
     if (font.loadFromFile("tms.ttf")) {
@@ -27,15 +27,22 @@ void GraphicSort::Run() {
         {
             if (event.type == sf::Event::Closed)
                 window.close();
+            // shuffle elements
             else if (event.type == sf::Event::MouseButtonPressed && event.key.code == sf::Mouse::Left) {
+                if (IsSlowAlgSelected()) {
+                    ResizeElements(slow_elem_size);
+                }
+                else {
+                    ResizeElements(elem_size);
+                }
                 ShuffleElements();
                 RenderElements();
             }
+            // start sorting
             else if (event.type == sf::Event::MouseButtonPressed && event.key.code == sf::Mouse::Right) {
-
                 sorting_algs[alg_id](shared_from_this(), sorting_elements);
             }
-            else if (event.type == sf::Event::TextEntered)
+            else if (event.type == sf::Event::TextEntered)  // algorithm choose
             {
                 char temp = ' ';
                 if (event.text.unicode < 128) {
@@ -46,9 +53,7 @@ void GraphicSort::Run() {
                     alg_id = temp - '0';    // cast to int
                     alg_label.setString(alg_names[alg_id]);
 
-                    if (alg_names[alg_id] == "bubble sort" ||
-                        alg_names[alg_id] == "shaker sort" ||
-                        alg_names[alg_id] == "comb sort") {
+                    if (IsSlowAlgSelected()) {
                         ResizeElements(slow_elem_size);
                     }
                     else {
@@ -87,17 +92,12 @@ void GraphicSort::ResizeElements(int elem_sz) {
     }
 }
 
+bool GraphicSort::IsSlowAlgSelected() {
+    return slow_alghs.find(alg_names[alg_id]) != slow_alghs.end();
+}
+
 void GraphicSort::ShuffleElements() {
-    srand(time(NULL));
-    if (alg_names[alg_id] == "bubble sort" ||
-        alg_names[alg_id] == "shaker sort" ||
-        alg_names[alg_id] == "comb sort") {
-        ResizeElements(slow_elem_size);
-    }
-    else {
-        ResizeElements(elem_size);
-    }
-    
+    srand(time(NULL));    
     for (int i = 0; i < sorting_elements.size(); i++) {
         int switch_num = rand() % sorting_elements.size();
         std::swap(sorting_elements[i], sorting_elements[switch_num]);
@@ -107,7 +107,10 @@ void GraphicSort::ShuffleElements() {
     }
 }
 
-void GraphicSort::AddAlgorithm(void (*algh_ptr)(std::shared_ptr<AlgorithmObs>, std::vector<int>&), std::string alg_name) {
+void GraphicSort::AddAlgorithm(void (*algh_ptr)(std::shared_ptr<AlgorithmObs>, std::vector<int>&), std::string alg_name, bool slow) {
+    if (slow) {
+        slow_alghs.insert(alg_name);
+    }
     sorting_algs.push_back(algh_ptr);
     alg_names.push_back(alg_name);
 }
