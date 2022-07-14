@@ -16,6 +16,8 @@ private:
     std::vector<sf::RectangleShape> graphic_elements;
     sf::Font font;
     sf::Text alg_label;
+    sf::Text elem_label;
+    sf::Text time_label;
     // sorting algorithms stored in fucntion object
     // all functions must have pointer to AlgorithmObs 
     // class (for notifying about each step of algorithm)
@@ -24,6 +26,9 @@ private:
     std::vector<std::string> alg_names;
     std::set<std::string> slow_alghs;
     int alg_id; // current algorithm
+    sf::Clock clock;
+    float elapsed_time;
+
 
 public:
     GraphicSort();

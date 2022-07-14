@@ -2,6 +2,7 @@
 
 GraphicSort::GraphicSort() {
     alg_id = 0;
+    elapsed_time = 0;
     ResizeElements(slow_elem_size);
 
     // setting text labels
@@ -13,11 +14,23 @@ GraphicSort::GraphicSort() {
     alg_label.setPosition(0, 0);
     alg_label.setFillColor(sf::Color::Red);
 
+    elem_label.setFont(font);
+    elem_label.setCharacterSize(40);
+    elem_label.setPosition(0, 50);
+    elem_label.setFillColor(sf::Color::Red);
+
+    time_label.setFont(font);
+    time_label.setCharacterSize(40);
+    time_label.setPosition(0, 100);
+    time_label.setFillColor(sf::Color::Red);
+
     window.create(sf::VideoMode(window_width, window_height), "SFML works!");
 }
 
 void GraphicSort::Run() {
     alg_label.setString(alg_names[alg_id]);
+    elem_label.setString("elements: " + std::to_string(sorting_elements.size()));
+    time_label.setString("elapsed time: " + std::to_string(elapsed_time));
     RenderElements();
 
     while (window.isOpen())
@@ -29,6 +42,9 @@ void GraphicSort::Run() {
                 window.close();
             // shuffle elements
             else if (event.type == sf::Event::MouseButtonPressed && event.key.code == sf::Mouse::Left) {
+                // reset the time
+                elapsed_time = 0;
+                time_label.setString("elapsed time: " + std::to_string(elapsed_time));
                 if (IsSlowAlgSelected()) {
                     ResizeElements(slow_elem_size);
                 }
@@ -40,6 +56,11 @@ void GraphicSort::Run() {
             }
             // start sorting
             else if (event.type == sf::Event::MouseButtonPressed && event.key.code == sf::Mouse::Right) {
+                // reset the time
+                elapsed_time = 0;
+                time_label.setString("elapsed time: " + std::to_string(elapsed_time));
+                // reset timer
+                clock.restart();
                 sorting_algs[alg_id](shared_from_this(), sorting_elements);
             }
             else if (event.type == sf::Event::TextEntered)  // algorithm choose
@@ -50,6 +71,10 @@ void GraphicSort::Run() {
                 }
 
                 if (temp >= '0' && temp < (sorting_algs.size() + '0')) {
+                    // reset the time
+                    elapsed_time = 0;
+                    time_label.setString("elapsed time: " + std::to_string(elapsed_time));
+
                     alg_id = temp - '0';    // cast to int
                     alg_label.setString(alg_names[alg_id]);
 
@@ -74,6 +99,8 @@ void GraphicSort::RenderElements() {
         window.draw(graphic_elements[i]);
     }
     window.draw(alg_label);
+    window.draw(elem_label);
+    window.draw(time_label);
     window.display();
 }
 
@@ -90,6 +117,7 @@ void GraphicSort::ResizeElements(int elem_sz) {
         graphic_elements[i].setPosition((i + 1) * rect_width, window_height);
         graphic_elements[i].rotate(180);
     }
+    elem_label.setString("elements: " + std::to_string(sorting_elements.size()));
 }
 
 bool GraphicSort::IsSlowAlgSelected() {
@@ -124,5 +152,8 @@ void GraphicSort::StepDone(int first, int second) {
     RenderElements();
     graphic_elements[first].setFillColor(sf::Color::White);
     graphic_elements[second].setFillColor(sf::Color::White);
+    elapsed_time += clock.getElapsedTime().asSeconds();
+    clock.restart();
+    time_label.setString("elapsed time: " + std::to_string(elapsed_time));
     //std::this_thread::sleep_for(std::chrono::milliseconds(1024));
 }
