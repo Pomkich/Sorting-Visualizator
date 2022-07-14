@@ -11,10 +11,20 @@ GraphicSort::GraphicSort() {
         graphic_elements[i].setPosition((i + 1) * rect_width, window_height);
     }
 
+    // setting text labels
+    if (font.loadFromFile("tms.ttf")) {
+        std::cout << "tms loaded" << std::endl;
+    }
+    alg_label.setFont(font);
+    alg_label.setCharacterSize(40);
+    alg_label.setPosition(0, 0);
+    alg_label.setFillColor(sf::Color::Red);
+
     window.create(sf::VideoMode(window_width, window_height), "SFML works!");
 }
 
 void GraphicSort::Run() {
+    alg_label.setString(alg_names[alg_id]);
     RenderElements();
 
     while (window.isOpen())
@@ -40,7 +50,8 @@ void GraphicSort::Run() {
 
                 if (temp >= '0' && temp < (sorting_algs.size() + '0')) {
                     alg_id = temp - '0';    // cast to int
-                    std::cout << alg_id << std::endl;
+                    alg_label.setString(alg_names[alg_id]);
+                    RenderElements();
                 }
             }
         }
@@ -53,6 +64,7 @@ void GraphicSort::RenderElements() {
     for (int i = 0; i < graphic_elements.size(); i++) {
         window.draw(graphic_elements[i]);
     }
+    window.draw(alg_label);
     window.display();
 }
 
@@ -67,8 +79,9 @@ void GraphicSort::ShuffleElements() {
     }
 }
 
-void GraphicSort::AddAlgorithm(void (*algh_ptr)(std::shared_ptr<AlgorithmObs>, std::vector<int>&)) {
+void GraphicSort::AddAlgorithm(void (*algh_ptr)(std::shared_ptr<AlgorithmObs>, std::vector<int>&), std::string alg_name) {
     sorting_algs.push_back(algh_ptr);
+    alg_names.push_back(alg_name);
 }
 
 void GraphicSort::StepDone(int first, int second) {
