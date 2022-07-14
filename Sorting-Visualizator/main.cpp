@@ -13,6 +13,7 @@ int main()
     win->AddAlgorithm(CombSort, "comb sort", false);
     win->AddAlgorithm(InsertionSort, "insertion sort", true);
     win->AddAlgorithm(QuickSort, "quick sort", false);
+    win->AddAlgorithm(MergeSort, "merge sort", false);
     win->Run();
 
 
