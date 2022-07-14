@@ -24,6 +24,18 @@ GraphicSort::GraphicSort() {
     time_label.setPosition(0, 100);
     time_label.setFillColor(sf::Color::Red);
 
+    choose_info.setFont(font);
+    choose_info.setCharacterSize(40);
+    choose_info.setPosition(0, 150);
+    choose_info.setFillColor(sf::Color::Red);
+    choose_info.setString("0-5 to choose algorithm");
+
+    start_info.setFont(font);
+    start_info.setCharacterSize(40);
+    start_info.setPosition(0, 200);
+    start_info.setFillColor(sf::Color::Red);
+    start_info.setString("RMB to shuffle, LMB to start");
+
     window.create(sf::VideoMode(window_width, window_height), "SFML works!");
 }
 
@@ -101,6 +113,8 @@ void GraphicSort::RenderElements() {
     window.draw(alg_label);
     window.draw(elem_label);
     window.draw(time_label);
+    window.draw(choose_info);
+    window.draw(start_info);
     window.display();
 }
 

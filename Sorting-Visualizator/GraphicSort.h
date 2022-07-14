@@ -18,6 +18,8 @@ private:
     sf::Text alg_label;
     sf::Text elem_label;
     sf::Text time_label;
+    sf::Text choose_info;
+    sf::Text start_info;
     // sorting algorithms stored in fucntion object
     // all functions must have pointer to AlgorithmObs 
     // class (for notifying about each step of algorithm)
