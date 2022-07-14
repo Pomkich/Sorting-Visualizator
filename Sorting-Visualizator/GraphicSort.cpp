@@ -2,14 +2,7 @@
 
 GraphicSort::GraphicSort() {
     alg_id = 0;
-    sorting_elements.resize(elem_size);
-    graphic_elements.resize(elem_size);
-    for (int i = 0; i < sorting_elements.size(); i++) {
-        sorting_elements[i] = i + 1;
-        graphic_elements[i].setSize(sf::Vector2f(rect_width, rect_height_scale * (i + 1)));
-        graphic_elements[i].rotate(180);
-        graphic_elements[i].setPosition((i + 1) * rect_width, window_height);
-    }
+    ResizeElements(elem_size);
 
     // setting text labels
     if (font.loadFromFile("tms.ttf")) {
@@ -39,6 +32,7 @@ void GraphicSort::Run() {
                 RenderElements();
             }
             else if (event.type == sf::Event::MouseButtonPressed && event.key.code == sf::Mouse::Right) {
+
                 sorting_algs[alg_id](shared_from_this(), sorting_elements);
             }
             else if (event.type == sf::Event::TextEntered)
@@ -51,6 +45,16 @@ void GraphicSort::Run() {
                 if (temp >= '0' && temp < (sorting_algs.size() + '0')) {
                     alg_id = temp - '0';    // cast to int
                     alg_label.setString(alg_names[alg_id]);
+
+                    if (alg_names[alg_id] == "bubble sort" ||
+                        alg_names[alg_id] == "shaker sort" ||
+                        alg_names[alg_id] == "comb sort") {
+                        ResizeElements(slow_elem_size);
+                    }
+                    else {
+                        ResizeElements(elem_size);
+                    }
+
                     RenderElements();
                 }
             }
@@ -68,8 +72,32 @@ void GraphicSort::RenderElements() {
     window.display();
 }
 
+void GraphicSort::ResizeElements(int elem_sz) {
+    sorting_elements.clear();
+    graphic_elements.clear();
+    sorting_elements.resize(elem_sz);
+    graphic_elements.resize(elem_sz);
+    rect_width = window_width / elem_sz;
+    rect_height_scale = window_height / elem_sz;
+    for (int i = 0; i < sorting_elements.size(); i++) {
+        sorting_elements[i] = i + 1;
+        graphic_elements[i].setSize(sf::Vector2f(rect_width, rect_height_scale * (i + 1)));
+        graphic_elements[i].setPosition((i + 1) * rect_width, window_height);
+        graphic_elements[i].rotate(180);
+    }
+}
+
 void GraphicSort::ShuffleElements() {
     srand(time(NULL));
+    if (alg_names[alg_id] == "bubble sort" ||
+        alg_names[alg_id] == "shaker sort" ||
+        alg_names[alg_id] == "comb sort") {
+        ResizeElements(slow_elem_size);
+    }
+    else {
+        ResizeElements(elem_size);
+    }
+    
     for (int i = 0; i < sorting_elements.size(); i++) {
         int switch_num = rand() % sorting_elements.size();
         std::swap(sorting_elements[i], sorting_elements[switch_num]);

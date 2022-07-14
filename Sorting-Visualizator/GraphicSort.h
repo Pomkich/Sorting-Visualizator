@@ -29,6 +29,7 @@ public:
     void Run();
     void RenderElements();
 
+    void ResizeElements(int elem_sz);
     void ShuffleElements();
     void AddAlgorithm(void (*)(std::shared_ptr<AlgorithmObs>, std::vector<int>&), std::string alg_name);
 
