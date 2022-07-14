@@ -1,6 +1,7 @@
 #include "GraphicSort.h"
 
 GraphicSort::GraphicSort() {
+    alg_id = 0;
     sorting_elements.resize(elem_size);
     graphic_elements.resize(elem_size);
     for (int i = 0; i < sorting_elements.size(); i++) {
@@ -28,7 +29,19 @@ void GraphicSort::Run() {
                 RenderElements();
             }
             else if (event.type == sf::Event::MouseButtonPressed && event.key.code == sf::Mouse::Right) {
-                sorting_algs[2](shared_from_this(), sorting_elements);
+                sorting_algs[alg_id](shared_from_this(), sorting_elements);
+            }
+            else if (event.type == sf::Event::TextEntered)
+            {
+                char temp = ' ';
+                if (event.text.unicode < 128) {
+                    temp = static_cast<char>(event.text.unicode);
+                }
+
+                if (temp >= '0' && temp < (sorting_algs.size() + '0')) {
+                    alg_id = temp - '0';    // cast to int
+                    std::cout << alg_id << std::endl;
+                }
             }
         }
         std::this_thread::sleep_for(std::chrono::milliseconds(32));
@@ -59,6 +72,7 @@ void GraphicSort::AddAlgorithm(void (*algh_ptr)(std::shared_ptr<AlgorithmObs>, s
 }
 
 void GraphicSort::StepDone(int first, int second) {
+    
     graphic_elements[first].setSize(sf::Vector2f(rect_width, rect_height_scale * sorting_elements[first]));
     graphic_elements[second].setSize(sf::Vector2f(rect_width, rect_height_scale * sorting_elements[second]));
     graphic_elements[first].setFillColor(sf::Color::Red);

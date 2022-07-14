@@ -10,6 +10,7 @@
 
 class GraphicSort : public AlgorithmObs, public std::enable_shared_from_this<GraphicSort> {
 private:
+    int alg_id; // current algorithm
     sf::RenderWindow window;
     std::vector<int> sorting_elements;
     std::vector<sf::RectangleShape> graphic_elements;
@@ -18,6 +19,7 @@ private:
     // class (for notifying about each step of algorithm)
     // and reference to elements
     std::vector<std::function<void(std::shared_ptr<AlgorithmObs>, std::vector<int>&)>> sorting_algs;
+    //std::vector<std::string> alg_names;
 
 public:
     GraphicSort();

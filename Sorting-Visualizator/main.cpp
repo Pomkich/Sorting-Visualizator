@@ -11,6 +11,8 @@ int main()
     win->AddAlgorithm(BubbleSort);
     win->AddAlgorithm(ShakerSort);
     win->AddAlgorithm(CombSort);
+    win->AddAlgorithm(InsertionSort);
+    win->AddAlgorithm(QuickSort);
     win->Run();
 
 
