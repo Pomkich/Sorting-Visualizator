@@ -6,7 +6,7 @@ GraphicSort::GraphicSort() {
     ResizeElements(slow_elem_size);
 
     // setting text labels
-    if (font.loadFromFile("tms.ttf")) {
+    if (font.loadFromFile("assets/tms.ttf")) {
         std::cout << "tms loaded" << std::endl;
     }
     alg_label.setFont(font);
